@@ -16,6 +16,9 @@ import ua.lviv.iot.airline.model.TransportAirplane;
  public class AirMovementManagerTest {
 
      protected AirMovementManager airMovementManager;
+     protected PassengerAirplane testPassengerAirplane;
+     protected Helicopter testHelicopter;
+     protected TransportAirplane testTransportAirplane;
 
      protected ArrayList<Airline> testListOfAircrafts;
 
@@ -23,10 +26,21 @@ import ua.lviv.iot.airline.model.TransportAirplane;
      @BeforeEach
      public void setUp() {
          this.testListOfAircrafts = new ArrayList<Airline>();
-         this.testListOfAircrafts.add(new PassengerAirplane("Aircompany", "ASS-111", 2010, 120, 100, "Electric", 2500.5, 1200.00, true));
-         this.testListOfAircrafts.add(new Helicopter("Helicopter inc.", "Gvintokrill", 2015, 8, 10, "Diesel", 1500.4, 2500.00, 2));
-         this.testListOfAircrafts.add(new TransportAirplane("Wizzair", "T10", 2000, 0, 200, "Diesel", 3000.0, 500.0, 2));
-         airMovementManager = new AirMovementManager(2500.0, testListOfAircrafts);
+         testPassengerAirplane = new PassengerAirplane("Aircompany", "ASS-111",
+                 2010, 120, 100,
+             "Electric", 2500.0, 1200.00, true);
+         testHelicopter = new Helicopter("Helicopter inc.", "Gvintokrill", 2015,
+                 8, 10,
+                 "Diesel", 1500.4, 2500.00, 2);
+         testTransportAirplane = new TransportAirplane("Wizzair", "T10", 2000, 0,
+                 200,
+             "Diesel", 3000.0, 500.0, 2);
+
+
+         testListOfAircrafts.add(testPassengerAirplane);
+         testListOfAircrafts.add(testHelicopter);
+         testListOfAircrafts.add(testTransportAirplane);
+         airMovementManager = new AirMovementManager(testListOfAircrafts);
      }
 
 
@@ -34,12 +48,12 @@ import ua.lviv.iot.airline.model.TransportAirplane;
      public void findAircraftBy() {
 
          AirMovementManager manager = new AirMovementManager();
-         double testPriceOfFlightInUAN = 60.50;
-         ArrayList<Airline> result = manager.findAircraftBy(testPriceOfFlightInUAN, testListOfAircrafts);
+         double testPriceOfFlightInUan = 60.50;
+         ArrayList<Airline> result = manager.findAircraftBy(testPriceOfFlightInUan, testListOfAircrafts);
 
          for (Airline good : result) {
-             System.out.println(good.getPriceOfFlightInUAN());
-             if (good.getPriceOfFlightInUAN() < testPriceOfFlightInUAN) {
+             System.out.println(good.getPriceOfFlightInUan());
+             if (good.getPriceOfFlightInUan() < testPriceOfFlightInUan) {
                  System.out.println("This good does not match the criteria");
              } else {
                  result.add(good);
@@ -51,7 +65,7 @@ import ua.lviv.iot.airline.model.TransportAirplane;
      @Test
      public void calculateFinalPrice(){
          final double expectedFinalPrice = 10 * 2500.0;
-         assertEquals(expectedFinalPrice, airMovementManager.calculateFinalPrice());
+         assertEquals(expectedFinalPrice, airMovementManager.calculateFinalPrice(testPassengerAirplane));
      }
 
      @Test
