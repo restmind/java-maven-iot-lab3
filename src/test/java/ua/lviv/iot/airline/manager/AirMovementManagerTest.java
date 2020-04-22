@@ -41,6 +41,7 @@ import ua.lviv.iot.airline.model.TransportAirplane;
          testListOfAircrafts.add(testHelicopter);
          testListOfAircrafts.add(testTransportAirplane);
          airMovementManager = new AirMovementManager(testListOfAircrafts);
+
      }
 
 

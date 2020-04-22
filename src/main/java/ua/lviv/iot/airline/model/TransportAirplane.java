@@ -17,6 +17,16 @@ public class TransportAirplane extends Airline {
         this.deliveryTimeInDays = deliveryTimeInDays;
     }
 
+    @Override
+    public String getHeaders() {
+        return super.getHeaders() + "," + "deliveryTimeInDays";
+    }
+
+    @Override
+    public String toCsv() {
+        return super.toCsv() + "," + getDeliveryTimeInDays();
+    }
+
     public int getDeliveryTimeInDays() {
         return deliveryTimeInDays;
     }
@@ -42,9 +52,15 @@ public class TransportAirplane extends Airline {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TransportAirplane)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TransportAirplane)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         TransportAirplane that = (TransportAirplane) o;
         return getDeliveryTimeInDays() == that.getDeliveryTimeInDays();
     }

@@ -38,6 +38,19 @@ public class Airline {
         System.out.println("Aircraft has been land");
     }
 
+    public String getHeaders() {
+        return "producerName" + "," + "nameOfAircraftModel" + "," + "productionYear" + ","
+                + "totalCapacityOfPassengers" + "," + "tonnageInTons" + "," + "typeOfEngine"
+                + "," + "flightRangeInKm" + "," + "priceOfFlightInUan";
+    }
+
+    public String toCsv() {
+        return getProducerName() + "," + getNameOfAircraftModel() + ","
+                + getProductionYear() + "," + getTotalCapacityOfPassengers() + ","
+                + getTonnageInTons() + "," + getTypeOfEngine() + ","
+                + getFlightRangeInKm() + "," + getPriceOfFlightInUan();
+    }
+
     public String getProducerName() {
         return producerName;
     }

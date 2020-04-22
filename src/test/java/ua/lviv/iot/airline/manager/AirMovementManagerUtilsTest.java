@@ -41,16 +41,4 @@ public class AirMovementManagerUtilsTest extends AirMovementManagerTest {
         assertEquals(testHelicopter, testListOfAircrafts.get(1));
         assertEquals(testPassengerAirplane, testListOfAircrafts.get(2));
     }
-
-    @Test
-    void sortFoundByPriceOfFlightInUan() {
-        AirMovementManagerUtils.sortFoundByPriceOfFlightInUan(testListOfAircrafts, SortType.ASCENDING);
-        assertEquals(testTransportAirplane, testListOfAircrafts.get(0));
-        assertEquals(testPassengerAirplane, testListOfAircrafts.get(1));
-        assertEquals(testHelicopter, testListOfAircrafts.get(2));
-        AirMovementManagerUtils.sortFoundByPriceOfFlightInUan(testListOfAircrafts, SortType.DESCENDING);
-        assertEquals(testHelicopter, testListOfAircrafts.get(0));
-        assertEquals(testPassengerAirplane, testListOfAircrafts.get(1));
-        assertEquals(testTransportAirplane, testListOfAircrafts.get(2));
-    }
 }
