@@ -1,21 +1,20 @@
 package ua.lviv.iot.airline.manager;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 
+
 import ua.lviv.iot.airline.model.Airline;
-
-
-
 
 
 public class AirMovementManagerUtils {
     private static final AirlineSorterFoundByNameOfAircraftModel AIRLINE_NAME_SORTER =
             new AirlineSorterFoundByNameOfAircraftModel();
 
-    //static inner class
+    //static nested class
     static class AirlineSorterFoundByNameOfAircraftModel implements Comparator<Airline> {
         @Override
         public int compare(Airline firstAircraft, Airline secondAircraft) {
@@ -25,7 +24,7 @@ public class AirMovementManagerUtils {
     }
 
     //inner class
-    class AirlineSorterFoundByTotalCapacityOfPassengers implements Comparator<Airline> {
+    class AirlineSorterFoundByTotalCapacityOfPassengers implements Comparator<Airline>, Serializable {
         @Override
         public int compare(Airline firstAircraft, Airline secondAircraft) {
             if (Double.compare(firstAircraft.getTotalCapacityOfPassengers(),
@@ -48,8 +47,8 @@ public class AirMovementManagerUtils {
 
             @Override
             public int compare(Airline firstAppliance, Airline secondAppliance) {
-                return (Double.compare(firstAppliance.getFlightRangeInKm(),
-                        secondAppliance.getFlightRangeInKm()));
+                return Double.compare(firstAppliance.getFlightRangeInKm(),
+                        secondAppliance.getFlightRangeInKm());
             }
         };
         aircraftList.sort(sortType == SortType.ASCENDING
@@ -61,6 +60,7 @@ public class AirMovementManagerUtils {
         AirMovementManagerUtils manager = new AirMovementManagerUtils();
         AirlineSorterFoundByTotalCapacityOfPassengers sorter
                 = manager.new AirlineSorterFoundByTotalCapacityOfPassengers();
+
         goods.sort(sortType == SortType.ASCENDING ? sorter : sorter.reversed());
     }
 
@@ -69,13 +69,5 @@ public class AirMovementManagerUtils {
         aircraftList.sort(sortType == SortType.ASCENDING
                 ? AIRLINE_NAME_SORTER :
                 AIRLINE_NAME_SORTER.reversed());
-    }
-
-    public static void sortFoundByPriceOfFlightInUan(ArrayList<Airline> aircraftList,
-                                                     SortType sortType) {
-        aircraftList.sort(sortType == SortType.ASCENDING ? (o1, o2)
-                -> (int) (o1.getPriceOfFlightInUan() - o2.getPriceOfFlightInUan()) : (o1, o2)
-                -> (int) (o2.getPriceOfFlightInUan() - o1.getPriceOfFlightInUan()));
-
     }
 }

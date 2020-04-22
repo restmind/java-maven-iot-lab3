@@ -21,6 +21,11 @@ public class PassengerAirplane extends Airline {
         return availabilityOfEconomClass;
     }
 
+    @Override
+    public String getHeaders() {
+        return super.getHeaders() + "," + "availabilityOfEconomClass";
+    }
+
     public void setAvailabilityOfEconomClass(boolean availabilityOfEconomClass) {
         this.availabilityOfEconomClass = availabilityOfEconomClass;
     }
@@ -42,9 +47,15 @@ public class PassengerAirplane extends Airline {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PassengerAirplane)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PassengerAirplane)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         PassengerAirplane that = (PassengerAirplane) o;
         return isAvailabilityOfEconomClass() == that.isAvailabilityOfEconomClass();
     }

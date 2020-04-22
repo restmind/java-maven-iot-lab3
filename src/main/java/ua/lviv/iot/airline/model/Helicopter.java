@@ -15,6 +15,16 @@ public class Helicopter extends Airline {
         this.quantityOfScrews = quantityOfScrews;
     }
 
+    @Override
+    public String getHeaders() {
+        return super.getHeaders() + "," + "quantityOfScrews";
+    }
+
+    @Override
+    public String toCsv() {
+        return super.toCsv() + "," + getQuantityOfScrews();
+    }
+
     public int getQuantityOfScrews() {
         return quantityOfScrews;
     }
@@ -44,9 +54,15 @@ public class Helicopter extends Airline {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Helicopter)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Helicopter)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         Helicopter that = (Helicopter) o;
         return getQuantityOfScrews() == that.getQuantityOfScrews();
     }
