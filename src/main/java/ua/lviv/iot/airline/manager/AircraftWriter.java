@@ -1,13 +1,14 @@
 package ua.lviv.iot.airline.manager;
 
 
+import ua.lviv.iot.airline.model.Airline;
+
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 
-
-import ua.lviv.iot.airline.model.Airline;
 
 public class AircraftWriter {
     public Writer csvWriter = new StringWriter();

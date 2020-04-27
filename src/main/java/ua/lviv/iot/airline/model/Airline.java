@@ -1,5 +1,6 @@
 package ua.lviv.iot.airline.model;
 
+
 import java.util.Objects;
 
 public class Airline {
@@ -11,6 +12,7 @@ public class Airline {
     protected String typeOfEngine;
     protected double flightRangeInKm;
     protected double priceOfFlightInUan;
+    private Integer id;
 
     public Airline(String producerName, String nameOfAircraftModel,
                    int productionYear, int totalCapacityOfPassengers,
@@ -49,6 +51,14 @@ public class Airline {
                 + getProductionYear() + "," + getTotalCapacityOfPassengers() + ","
                 + getTonnageInTons() + "," + getTypeOfEngine() + ","
                 + getFlightRangeInKm() + "," + getPriceOfFlightInUan();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getProducerName() {
