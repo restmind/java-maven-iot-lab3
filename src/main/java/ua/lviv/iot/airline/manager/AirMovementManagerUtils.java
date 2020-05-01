@@ -1,21 +1,21 @@
 package ua.lviv.iot.airline.manager;
 
 
+import ua.lviv.iot.airline.model.Airline;
+
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 
 
-import ua.lviv.iot.airline.model.Airline;
-
-
-public class AirMovementManagerUtils {
+public class AirMovementManagerUtils implements Serializable {
     private static final AirlineSorterFoundByNameOfAircraftModel AIRLINE_NAME_SORTER =
             new AirlineSorterFoundByNameOfAircraftModel();
 
     //static nested class
-    static class AirlineSorterFoundByNameOfAircraftModel implements Comparator<Airline> {
+    static class AirlineSorterFoundByNameOfAircraftModel implements Comparator<Airline>, Serializable {
         @Override
         public int compare(Airline firstAircraft, Airline secondAircraft) {
             return firstAircraft.getNameOfAircraftModel()
@@ -24,7 +24,8 @@ public class AirMovementManagerUtils {
     }
 
     //inner class
-    class AirlineSorterFoundByTotalCapacityOfPassengers implements Comparator<Airline>, Serializable {
+    class AirlineSorterFoundByTotalCapacityOfPassengers
+            implements Comparator<Airline> {
         @Override
         public int compare(Airline firstAircraft, Airline secondAircraft) {
             if (Double.compare(firstAircraft.getTotalCapacityOfPassengers(),
