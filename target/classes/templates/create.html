@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Airport</title>
+
+    <link rel="stylesheet"  th:href="@{/css/styles.css}"/>
+    <link rel="stylesheet"  th:href="@{/css/form.css}"/>
+</head>
+
+<body>
+    <header class="header">
+        <div class="menu">
+            <div>My Airport</div>
+            <ul>
+                <li><a href="http://localhost:8080/airlines/">My Aircraft</a></li>
+                <li><a href="http://localhost:8080/airlines/create">Create Aircraft</a></li>
+            </ul>
+        </div>
+    </header>
+    <main class="create_main">
+        <form id="form" onSubmit="return checkform()" method="POST" action="/airlines/" class="add_form">
+            <h3 class="mb-3">Create card</h3>
+            <div class="form-control">
+                <label class="form-label">Name of aircraft</label>
+                <input type="text" class="form-control" name="nameOfAircraftModel" id="nameOfAircraftModel" placeholder=""/>
+                <small>Error message</small>
+            </div>
+            <div class="form-control">
+                <label class="form-label">Maker</label>
+                <input type="text" class="form-control" name="producerName" id="producerName" placeholder=""/>
+                <small>Error message</small>
+            </div>
+            <div class="form-control">
+                <label class="form-label">Production year</label>
+                <input type="text" class="form-control" name="productionYear" id="productionYear" placeholder=""/>
+                <small>Error message</small>
+            </div>
+            <div class="form-control">
+                <label class="form-label">Total capacity of passengers</label>
+                <input type="text" class="form-control" name="totalCapacityOfPassengers" id="totalCapacityOfPassengers" placeholder=""/>
+                <small>Error message</small>
+            </div>
+            <div class="form-control">
+                <label class="form-label">Tonnage</label>
+                <input type="text" class="form-control" name="tonnageInTons" id="tonnageInTons" placeholder=""/>
+                <small>Error message</small>
+            </div>
+            <div class="form-control">
+                <label class="form-label">Type of engine</label>
+                <input type="text" class="form-control" name="typeOfEngine" id="typeOfEngine" placeholder=""/>
+                <small>Error message</small>
+            </div>
+            <div class="form-control">
+                <label class="form-label">Flight range</label>
+                <input type="text" class="form-control" name="flightRangeInKm" id="flightRangeInKm" placeholder=""/>
+                <small>Error message</small>
+            </div>
+            <div class="form-control">
+                <label class="form-label">Price of flight</label>
+                <input type="text" class="form-control" name="priceOfFlightInUan" id="priceOfFlightInUan" placeholder=""/>
+                <small>Error message</small>
+            </div>
+            <button id="submit_button" type="submit" class="btn btn-primary">
+                Submit
+            </button>
+        </form>
+
+    </main>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/js/validate.js}"></script>
+</body>
+
+</html>
