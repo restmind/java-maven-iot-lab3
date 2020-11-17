@@ -5,54 +5,53 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ua.lviv.iot.airline.business.AirlineService;
 import ua.lviv.iot.airline.model.Airline;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @RequestMapping("/airlines")
-@RestController
+@Controller
 public class AirlineController {
     @Autowired
     private AirlineService airlineService;
 
-    @GetMapping
+
+
+    @GetMapping(path = "/getAll")
     public List<Airline> getAirlines() {
         return airlineService.findAll();
     }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<Airline> getStudent(final @PathVariable("id") Integer airlineId) {
+/*    @GetMapping(path = "/{id}")
+    public ResponseEntity<Airline> getAirline(final @PathVariable("id") Integer airlineId) {
         return airlineService.getAirline(airlineId);
-    }
+    }*/
 
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Airline createStudent(final @RequestBody Airline airline) {
+    @PostMapping(path = "/",produces = {MediaType.APPLICATION_JSON_VALUE},  consumes = {"application/x-www-form-urlencoded"})
+    public String createAirline(final Airline airline) {
         airlineService.createAirline(airline);
-        return airline;
+        return "create";
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Airline> deleteStudent(final @PathVariable("id") Integer airlineId) {
+    public ResponseEntity<Airline> deleteAirline(final @PathVariable("id") Integer airlineId) {
 
         HttpStatus status = airlineService.deleteAirline(airlineId);
         return ResponseEntity.status(status).build();
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<Airline> updateStudent(final @PathVariable("id") Integer studentId,
-                                                 final @RequestBody Airline airline) {
-        return airlineService.updateAirline(airline, studentId);
+    @RequestMapping(value = "/edit/update/{id}", method = {RequestMethod.GET, RequestMethod.PUT})
+    public String updateAirline(final @PathVariable("id") Integer airlineId,
+                                                  Airline airline) {
+        airlineService.updateAir(airline, airlineId);
+        return "index";
     }
 
     public AirlineService getAirlineService() {
@@ -61,5 +60,25 @@ public class AirlineController {
 
     public void setAirlineService(AirlineService airlineService) {
         this.airlineService = airlineService;
+    }
+
+    @RequestMapping(value = "/")
+    public String indexPage(Model model) {
+         List<Airline> airlines = airlineService.findAll();
+         model.addAttribute("airlines", airlines);
+        return "index";
+    }
+
+    @RequestMapping(value = "/create")
+    public String createPage() {
+        return "create";
+    }
+
+    @RequestMapping(value = "/edit/{id}")
+    public String editPage(final @PathVariable("id") Integer airlineId,Model model) {
+        List<Airline> airlines = new ArrayList<>();
+        airlines.add(airlineService.getAirlineRepository().findById(airlineId).get());
+        model.addAttribute("airline", airlines);
+        return "edit";
     }
 }

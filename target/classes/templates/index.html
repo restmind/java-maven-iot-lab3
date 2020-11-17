@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Airport</title>
+
+    <link rel="stylesheet"  th:href="@{/css/styles.css}"/>
+</head>
+<body>
+<header class="header">
+    <div class="menu">
+        <div>My Airport</div>
+        <ul>
+            <li><a href="http://localhost:8080/airlines/">My Aircraft</a></li>
+            <li><a href="http://localhost:8080/airlines/create">Create Aircraft</a></li>
+        </ul>
+    </div>
+    <div>
+        <form class="flex" id="submit_search">
+            <label for="search">
+                <input type="text" id="search" placeholder="Search for airplane name" onkeyup="searchByName()"/>
+            </label>
+        </form>
+    </div>
+</header>
+<main>
+    <nav>
+        <h2>Manage Aircraft</h2>
+        <div class="sort_option_box">
+            <h3>Sort by production year</h3>
+            <input type="checkbox" id="switch"/><label for="switch" class="sort_label">Toggle</label>
+        </div>
+        <div class="count_option_box">
+            <h3>Count total quantity:</h3>
+            <button id="calculate__capacity" type="button">Count</button>
+            <div id="count__result"></div>
+
+        </div>
+    </nav>
+    <section class="items_section">
+        <ul id="items_container">
+            <li class="items_container_card" draggable="true" th:each="airline : ${airlines}" th:id="'item'+ ${airline.id}">
+                <div class="div-img"></div>
+                <div class="items_container_body" >
+                    <h5 class="items_container_body_title">Name of aircraft: <span th:text="${airline.nameOfAircraftModel}"></span></h5>
+                    <p class="items_container_body_text">Maker: <span th:text="${airline.producerName}"></span></p>
+                    <p class="items_container_body_text">Production year: <span th:text="${airline.productionYear}"></span></p>
+                    <p class="items_container_body_text">Total capacity of passengers: <span th:text="${airline.totalCapacityOfPassengers}"></span></p>
+                    <p class="items_container_body_text">Tonnage: <span th:text="${airline.tonnageInTons}"></span> tons</p>
+                    <p class="items_container_body_text">Type of engine: <span th:text="${airline.typeOfEngine}"></span></p>
+                    <p class="items_container_body_text">Flight range: <span th:text="${airline.flightRangeInKm}"></span> km</p>
+                    <p class="items_container_body_text">Price of flight: <span th:text="${airline.priceOfFlightInUan}"></span> UAN</p>
+                    <form th:action="@{/airlines/edit/{id}(id=${airline.id})}">
+                        <input type="submit" value="Edit" />
+                    </form>
+                    <button id = "remove__button" type="button" th:onclick="|deleteAirplane('${airline.id}');|">
+                        Remove
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </section>
+</main>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/manipulate.js}"></script>
+<script th:inline="javascript">
+    let data = [[${airlines}]];
+    let isAppended = false;
+    const itemsContainer = document.getElementById('items_container');
+    const calculateTotalCapacityOfPassengersBtn = document.getElementById('calculate__capacity');
+    const countResult = document.getElementById('count__result');
+    const sortBtn = document.getElementById('switch');
+
+
+    function calculateTotalCapacityOfPassengers() {
+        let result = 0;
+
+        for (let i = 0;data.length > i; i++) {
+            result+=data[i].totalCapacityOfPassengers;
+        }
+        const consumptionEl = document.createElement('div');
+
+        consumptionEl.innerHTML = `<h2>Total Passenger capacity: <strong>${result}</strong></h2>`;
+        if (!isAppended) {
+            countResult.appendChild(consumptionEl);
+            isAppended = true;
+        }
+    }
+
+
+    function sortByProductionYear() {
+        data.sort((a, b) => a.productionYear - b.productionYear);
+        for (let i = 0; i < data.length; i++) {
+            document.getElementById("item" + data[i].id).remove();
+            const newChild = document.createElement('li');
+            newChild.setAttribute("id", " item" + data[i].id);
+            newChild.setAttribute("style", "  border: solid 1px grey; width: 30%; margin: 15px;");
+            newChild.innerHTML = `
+                        <div class="div-img"></div>
+                <div class="items_container_body" >
+                    <h5 class="items_container_body_title">Name of aircraft: <span>${data[i].nameOfAircraftModel}</span></h5>
+                    <p class="items_container_body_text">Maker: <span>${data[i].producerName}</span></p>
+                    <p class="items_container_body_text">Production year: <span>${data[i].productionYear}</span></p>
+                    <p class="items_container_body_text">Total capacity of passengers: <span>${data[i].totalCapacityOfPassengers}</span></p>
+                    <p class="items_container_body_text">Tonnage: <span>${data[i].tonnageInTons}</span> tons</p>
+                    <p class="items_container_body_text">Type of engine: <span>${data[i].typeOfEngine}</span></p>
+                    <p class="items_container_body_text">Flight range: <span>${data[i].flightRangeInKm}</span> km</p>
+                    <p class="items_container_body_text">Price of flight: <span>${data[i].priceOfFlightInUan}</span> UAN</p>
+                    <button  type="button" class="">
+                        Edit
+                    </button>
+                    <button id = "remove__button" type="button" th:onclick="|deleteAirplane('${data[i].id}');|">
+                        Remove
+                    </button>
+                </div>
+`;
+            itemsContainer.appendChild(newChild);
+        }
+    }
+    function deleteAirplane(id){
+        const formData = new FormData();
+        let delete_endpoint = 'http://localhost:8080/airlines/' + id;
+        document.getElementById("item"+id).remove();
+        return fetch(delete_endpoint, {
+            method: 'DELETE',
+            body: formData
+        });
+
+    }
+
+    function searchByName() {
+        var input, filter, a, i;
+        input = document.getElementById('search');
+        filter = input.value.toUpperCase();
+        var itemId;
+        for (i = 0; i < data.length; i++) {
+            itemId = document.getElementById("item" + data[i].id);
+            a = data[i].nameOfAircraftModel;
+            if (a.toUpperCase().indexOf(filter) > -1) {
+                itemId.style.display = "";
+            } else {
+                itemId.style.display = "none";
+            }
+        }
+    }
+    calculateTotalCapacityOfPassengersBtn.addEventListener('click', calculateTotalCapacityOfPassengers);
+    sortBtn.addEventListener('click', sortByProductionYear);
+</script>
+</body>
+</html>
