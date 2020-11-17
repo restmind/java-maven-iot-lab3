@@ -59,4 +59,9 @@ public class AirlineService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    public Airline updateAir(Airline airline, Integer airlineId) {
+        airline.setId(airlineId);
+        return airlineRepository.save(airline);
+    }
 }
